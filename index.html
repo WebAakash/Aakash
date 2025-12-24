@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aakash Kumar - Luxury Embroidery Designer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial Rounded MT', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f3ef 0%, #e8e3d9 100%);
+            min-height: 100vh;
+            color: #3e2723;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 40px;
+        }
+
+        /* Wooden Texture Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(62, 39, 35, 0.02) 2px, rgba(62, 39, 35, 0.02) 4px),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(62, 39, 35, 0.02) 2px, rgba(62, 39, 35, 0.02) 4px);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        /* WOODEN TEXTURE CLASS */
+        .wooden-text {
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), 
+                        linear-gradient(135deg, #5d4037 0%, #3e2723 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        /* SHIMMER EFFECT CLASS */
+        .shimmer-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .shimmer-card:hover::after {
+            left: 150%;
+            transition: 0.8s ease-in-out;
+        }
+
+        /* SCROLL PROGRESS BAR */
+        #scrollProgress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background: linear-gradient(90deg, #d4a574, #f4e4c1, #d4a574);
+            z-index: 10000;
+            transition: width 0.3s ease-out;
+            box-shadow: 0 2px 10px rgba(212, 165, 116, 0.5);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 40px;
+            margin-bottom: 80px;
+            align-items: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: linear-gradient(145deg, #ffffff, #faf8f5);
+            border-radius: 40px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(62, 39, 35, 0.15);
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: fit-content;
+            align-self: center;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 80px rgba(212, 165, 116, 0.25);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            border: 5px solid #ffffff;
+            box-shadow: 0 10px 40px rgba(212, 165, 116, 0.3);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .profile-img:hover { transform: scale(1.05); }
+        .profile-img img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-card h1 { font-size: 2.5rem; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .profile-card .title { font-size: 1.1rem; color: #d4a574; margin-bottom: 20px; font-weight: 500; }
+
+        .contact-info { margin: 20px 0; text-align: left; }
+        .contact-item {
+            display: flex; align-items: center; margin: 10px 0; color: #5d4037; font-size: 0.9rem;
+            padding: 10px 15px; background: rgba(212, 165, 116, 0.05); border-radius: 25px; transition: all 0.3s ease;
+        }
+        .contact-item:hover { background: rgba(212, 165, 116, 0.15); transform: translateX(5px); }
+        .contact-item i { margin-right: 15px; font-size: 1.1rem; width: 20px; color: #d4a574; }
+
+        .contact-links { display: flex; justify-content: center; gap: 15px; margin-top: 25px; }
+        .contact-links a {
+            display: flex; align-items: center; justify-content: center; width: 50px; height: 50px;
+            border-radius: 50%; color: white; font-size: 1.2rem; text-decoration: none;
+            background: linear-gradient(135deg, #d4a574, #c9985e);
+            box-shadow: 0 5px 20px rgba(212, 165, 116, 0.3); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .contact-links a:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 30px rgba(212, 165, 116, 0.5); }
+
+        /* Buttons */
+        .action-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+        .btn-primary {
+            padding: 15px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+            text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            color: white; background-size: 200% auto; transition: all 0.5s ease; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .download-resume { background-image: linear-gradient(to right, #b08d55 0%, #d4a574 51%, #b08d55 100%); }
+        .view-slides { background-image: linear-gradient(to right, #4e342e 0%, #8d6e63 51%, #4e342e 100%); }
+        .btn-primary:hover { background-position: right center; color: #fff; transform: translateY(-3px); filter: brightness(1.2); box-shadow: 0 10px 25px rgba(212, 165, 116, 0.5); }
+
+        /* Professional Summary */
+        .intro-card {
+            background: linear-gradient(145deg, #ffffff, #faf8f5);
+            border-radius: 40px; padding: 50px;
+            box-shadow: 0 20px 60px rgba(62, 39, 35, 0.15);
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            transition: all 0.4s ease; height: fit-content; align-self: center;
+        }
+        .intro-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 80px rgba(212, 165, 116, 0.25);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+        .intro-card h2 { font-size: 2.5rem; margin-bottom: 30px; letter-spacing: -0.5px; position: relative; display: inline-block; }
+        .intro-card h2::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 100px; height: 4px; background: linear-gradient(90deg, #d4a574, transparent); border-radius: 2px; }
+        .intro-card p { font-size: 1.05rem; line-height: 1.9; color: #5d4037; margin-bottom: 25px; }
+        .intro-card strong { color: #d4a574; font-weight: 600; }
+        .intro-card ul { list-style: none; padding-left: 0; margin-top: 25px; }
+        .intro-card li { color: #5d4037; font-size: 1rem; line-height: 1.9; margin-bottom: 15px; position: relative; padding-left: 35px; transition: all 0.3s ease; }
+        .intro-card li:hover { transform: translateX(5px); }
+        .intro-card li::before { content: '✦'; position: absolute; left: 0; color: #d4a574; font-size: 1.3rem; font-weight: bold; }
+
+        /* Info Cards */
+        .info-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-bottom: 80px; }
+        .info-card {
+            background: linear-gradient(145deg, #ffffff, #faf8f5);
+            border-radius: 30px; padding: 40px 30px; text-align: center;
+            box-shadow: 0 15px 40px rgba(62, 39, 35, 0.12);
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(212, 165, 116, 0.25);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+        .info-card .card-icon { font-size: 3rem; color: #d4a574; margin-bottom: 20px; transition: all 0.3s ease; }
+        .info-card:hover .card-icon { transform: scale(1.15) rotate(5deg); }
+        .info-card h3 { font-size: 1.3rem; margin-bottom: 15px; font-weight: 600; }
+        .info-card .highlight { font-size: 2.5rem; display: block; margin: 15px 0; }
+        .info-card p { color: #6d4c41; font-size: 0.95rem; line-height: 1.6; }
+
+        /* Core Skills */
+        .skills-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 25px; margin-bottom: 80px; }
+        .skill-card {
+            background: linear-gradient(145deg, #ffffff, #faf8f5);
+            border-radius: 30px; padding: 35px 25px; text-align: center;
+            box-shadow: 0 15px 40px rgba(62, 39, 35, 0.12);
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(212, 165, 116, 0.25);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+        .skill-icon {
+            width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1), rgba(212, 165, 116, 0.05));
+            border-radius: 50%; margin-bottom: 20px; transition: all 0.3s ease;
+        }
+        .skill-card:hover .skill-icon { transform: rotate(360deg) scale(1.1); }
+        .skill-icon i { font-size: 2.2rem; color: #d4a574; }
+        .skill-card h4 { color: #3e2723; font-size: 1.05rem; font-weight: 600; margin-bottom: 15px; }
+        .skill-progress-container { width: 100%; height: 6px; background: rgba(212, 165, 116, 0.15); border-radius: 10px; overflow: hidden; margin-top: auto; }
+        .skill-progress { height: 100%; background: linear-gradient(90deg, #d4a574, #c9985e); border-radius: 10px; transition: width 1.5s ease-out; width: 0%; box-shadow: 0 0 10px rgba(212, 165, 116, 0.5); }
+
+        .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 50px; position: relative; letter-spacing: -0.5px; }
+        .section-title::after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 120px; height: 4px; background: linear-gradient(90deg, transparent, #d4a574, transparent); border-radius: 2px; }
+
+        /* Workflow Section */
+        .workflow-section {
+            background: linear-gradient(145deg, #ffffff, #faf8f5);
+            border-radius: 40px; padding: 60px 50px;
+            box-shadow: 0 20px 60px rgba(62, 39, 35, 0.15);
+            border: 1px solid rgba(212, 165, 116, 0.2); margin-bottom: 80px;
+        }
+        .workflow-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 25px; position: relative; }
+        .workflow-grid::before {
+            content: ''; position: absolute; top: 40px; left: 50px; right: 50px; height: 2px;
+            background: repeating-linear-gradient(90deg, #d4a574 0, #d4a574 10px, transparent 10px, transparent 20px); z-index: 0; opacity: 0.5;
+        }
+        .step-card {
+            background: #ffffff; border-radius: 50px; padding: 30px 20px; text-align: center;
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            box-shadow: 0 10px 20px rgba(62, 39, 35, 0.05); position: relative; z-index: 1; transition: all 0.4s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(212, 165, 116, 0.2);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+        .step-number { display: inline-block; background: linear-gradient(135deg, #d4a574, #c9985e); color: white; width: 35px; height: 35px; line-height: 35px; border-radius: 50%; font-size: 0.9rem; font-weight: bold; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(212, 165, 116, 0.4); }
+        .step-icon { font-size: 2rem; color: #5d4037; margin-bottom: 15px; height: 50px; }
+        .step-card h4 { color: #3e2723; font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
+        .step-card p { font-size: 0.85rem; color: #6d4c41; line-height: 1.4; }
+
+        /* Experience Section */
+        .experience-section {
+            background: linear-gradient(145deg, #ffffff, #faf8f5); border-radius: 40px; padding: 60px 50px;
+            box-shadow: 0 20px 60px rgba(62, 39, 35, 0.15); border: 1px solid rgba(212, 165, 116, 0.2); margin-bottom: 80px;
+        }
+        .timeline { max-width: 900px; margin: 0 auto; }
+        .timeline-item {
+            background: rgba(255, 255, 255, 0.7); border-radius: 30px; padding: 40px; margin-bottom: 30px;
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            border-left: 5px solid #d4a574;
+            box-shadow: 0 10px 30px rgba(62, 39, 35, 0.1); transition: all 0.3s ease; position: relative;
+        }
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.2);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+            border-left-width: 8px; /* Maintain thick left border */
+        }
+        .timeline-item.learning { border-left-color: #8d6e63; }
+        .timeline-item h4 { font-size: 1.6rem; margin-bottom: 10px; }
+        .timeline-item .company { color: #d4a574; font-weight: 600; font-size: 1.1rem; margin-bottom: 8px; }
+        .timeline-item.learning .company { color: #8d6e63; }
+        .timeline-item .duration { color: #8d6e63; font-size: 0.9rem; margin-bottom: 20px; font-weight: 500; }
+        .timeline-item ul { list-style: none; padding-left: 0; }
+        .timeline-item li { color: #5d4037; line-height: 1.8; margin-bottom: 12px; position: relative; padding-left: 30px; }
+        .timeline-item li::before { content: '◆'; position: absolute; left: 0; color: #d4a574; font-size: 1rem; }
+        .timeline-item.learning li::before { color: #8d6e63; }
+
+        /* Embroidery Projects */
+        .projects-section {
+            background: linear-gradient(145deg, #ffffff, #faf8f5); border-radius: 40px; padding: 60px 50px;
+            box-shadow: 0 20px 60px rgba(62, 39, 35, 0.15); border: 1px solid rgba(212, 165, 116, 0.2); margin-bottom: 80px;
+        }
+        .projects-subtitle { text-align: center; color: #8d6e63; font-size: 1.1rem; margin-bottom: 50px; font-style: italic; }
+        .embroidery-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; }
+        .embroidery-card {
+            background: #ffffff; border-radius: 25px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(62, 39, 35, 0.12);
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+        }
+        .embroidery-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(212, 165, 116, 0.3);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+        .embroidery-card img { width: 100%; height: 280px; object-fit: cover; transition: transform 0.5s ease; }
+        .embroidery-card:hover img { transform: scale(1.1); }
+        .card-content { padding: 20px; background: rgba(212, 165, 116, 0.05); text-align: center; }
+        .card-content h4 { color: #3e2723; font-size: 0.95rem; font-weight: 600; }
+
+        /* Education Section */
+        .education-section {
+            background: linear-gradient(145deg, #ffffff, #faf8f5); border-radius: 40px; padding: 60px 50px;
+            box-shadow: 0 20px 60px rgba(62, 39, 35, 0.15); border: 1px solid rgba(212, 165, 116, 0.2); margin-bottom: 80px;
+        }
+        .education-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .education-column h3 { font-size: 1.8rem; margin-bottom: 30px; }
+        .education-item {
+            background: rgba(255, 255, 255, 0.7); border-radius: 20px; padding: 25px; margin-bottom: 20px;
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            border-left: 4px solid #d4a574;
+            transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(62, 39, 35, 0.08);
+        }
+        .education-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(212, 165, 116, 0.2);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+        .education-item h4 { color: #3e2723; font-size: 1.15rem; margin-bottom: 8px; font-weight: 600; }
+        .education-item p { color: #6d4c41; font-size: 0.95rem; }
+
+        /* Personal Info & Interests */
+        .personal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 80px; }
+        .personal-card {
+            background: linear-gradient(145deg, #ffffff, #faf8f5); border-radius: 40px; padding: 45px;
+            box-shadow: 0 20px 60px rgba(62, 39, 35, 0.15);
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            transition: all 0.4s ease;
+        }
+        .personal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(212, 165, 116, 0.25);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+        .personal-card h3 { font-size: 1.8rem; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+        .personal-card h3 i { color: #d4a574; font-size: 2rem; }
+        .personal-card p { color: #5d4037; font-size: 1rem; line-height: 1.8; margin-bottom: 15px; }
+        .personal-card strong { color: #3e2723; font-weight: 600; }
+        .personal-card ul { list-style: none; padding-left: 0; }
+        .personal-card li { color: #5d4037; font-size: 1rem; line-height: 1.8; margin-bottom: 12px; position: relative; padding-left: 30px; transition: all 0.3s ease; }
+        .personal-card li:hover { transform: translateX(5px); color: #d4a574; }
+        .personal-card li::before { content: '✦'; position: absolute; left: 0; color: #d4a574; font-size: 1.2rem; }
+
+        /* Footer Pill */
+        .footer-pill {
+            background: linear-gradient(145deg, #ffffff, #faf8f5); border-radius: 50px; padding: 25px 50px; text-align: center;
+            border: 1px solid rgba(212, 165, 116, 0.2); /* Base Border */
+            box-shadow: 0 15px 40px rgba(62, 39, 35, 0.1); position: relative; overflow: hidden;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .footer-pill:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 60px rgba(212, 165, 116, 0.25);
+            border-color: #d4a574; /* GOLD BORDER ON HOVER */
+        }
+        .footer-text { color: #5d4037; font-size: 0.95rem; font-weight: 600; }
+
+        .creative-credit {
+            background: linear-gradient(135deg, #d4a574, #c9985e); color: white; padding: 8px 20px;
+            border-radius: 20px; font-size: 0.9rem; box-shadow: 0 5px 15px rgba(212, 165, 116, 0.3); display: flex; align-items: center; gap: 8px;
+        }
+        .creative-credit i { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero { grid-template-columns: 1fr; }
+            .profile-card { position: relative; top: 0; }
+            .skills-row, .embroidery-grid, .workflow-grid { grid-template-columns: repeat(3, 1fr); }
+            .workflow-grid::before { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .info-cards, .skills-row, .embroidery-grid, .workflow-grid { grid-template-columns: repeat(2, 1fr); }
+            .education-grid, .personal-grid { grid-template-columns: 1fr; }
+            .footer-pill { justify-content: center; flex-direction: column; text-align: center; }
+            .workflow-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div id="scrollProgress"></div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="profile-card shimmer-card">
+                <div class="profile-img">
+                    <img src="images/Aakash.jpg" alt="Aakash Kumar">
+                </div>
+                <h1 class="wooden-text">Aakash Kumar</h1>
+                <p class="title">Embroidery Digitizer & Creative Professional</p>
+                <div class="contact-info">
+                    <div class="contact-item"><i class="fas fa-phone"></i><span>+91 9650519154</span></div>
+                    <div class="contact-item"><i class="fas fa-envelope"></i><span>akashkumar.lkp@gmail.com</span></div>
+                    <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>New Delhi, India</span></div>
+                </div>
+                <div class="contact-links">
+                    <a href="mailto:akashkumar.lkp@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="tel:+919650519154" title="Phone"><i class="fas fa-phone"></i></a>
+                    <a href="https://wa.me/919650519154" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+                <div class="action-buttons">
+                    <a href="images/resume.pdf" class="btn-primary download-resume" download><i class="fas fa-download"></i> Download Resume</a>
+                    <a href="images/slide.pdf" class="btn-primary view-slides" target="_blank"><i class="fas fa-eye"></i> View Slides</a>
+                </div>
+            </div>
+            
+            <div class="intro-card shimmer-card">
+                <h2 class="wooden-text">Professional Summary</h2>
+                <p>I am a dedicated <strong>Embroidery Digitizer and Creative Professional</strong> with over two years of specialized experience in crafting intricate, production-ready designs. My core expertise lies in <strong>Wilcom Embroidery Studio</strong>, where I master advanced digitizing techniques, including fabric-friendly stitch optimization, density adjustment, and production workflow management.</p>
+                <p>What sets my work apart is the integration of <strong>AI-powered design solutions</strong>. By leveraging tools like <strong>ChatGPT</strong> and <strong>Gemini</strong>, I enhance traditional embroidery with modern creativity and efficiency. This innovative approach is showcased in my extensive portfolio, which features a wide range of designs, including:</p>
+                <ul>
+                    <li><strong>Traditional Motifs:</strong> Elegant paisley patterns and intricate figurative art.</li>
+                    <li><strong>Nature & Landscapes:</strong> Complex, detailed forest scenes and nature-inspired compositions.</li>
+                    <li><strong>Floral & Geometric Patterns:</strong> High-quality, vibrant floral arrangements and structured geometric designs.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="info-cards">
+            <div class="info-card shimmer-card">
+                <div class="card-icon"><i class="fas fa-award"></i></div>
+                <h3 class="wooden-text">Experience</h3>
+                <span class="highlight wooden-text">2+</span>
+                <p>Years of specialized embroidery digitizing experience</p>
+            </div>
+            <div class="info-card shimmer-card">
+                <div class="card-icon"><i class="fas fa-star"></i></div>
+                <h3 class="wooden-text">Client Satisfaction</h3>
+                <span class="highlight wooden-text">98%</span>
+                <p>Satisfaction rate through accurate design delivery</p>
+            </div>
+            <div class="info-card shimmer-card">
+                <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3 class="wooden-text">Software Mastery</h3>
+                <span class="highlight wooden-text">8+</span>
+                <p>Professional software tools & technologies mastered</p>
+            </div>
+            <div class="info-card shimmer-card">
+                <div class="card-icon"><i class="fas fa-certificate"></i></div>
+                <h3 class="wooden-text">Certifications</h3>
+                <span class="highlight wooden-text">4</span>
+                <p>Professional certifications and qualifications</p>
+            </div>
+        </div>
+
+        <!-- Core Skills -->
+        <div class="skills-row">
+            <div class="skill-card shimmer-card">
+                <div class="skill-icon"><i class="fas fa-drafting-compass"></i></div>
+                <h4>Wilcom Embroidery Studio</h4>
+                <div class="skill-progress-container"><div class="skill-progress" data-width="90%"></div></div>
+            </div>
+            <div class="skill-card shimmer-card">
+                <div class="skill-icon"><i class="fas fa-vector-square"></i></div>
+                <h4>Vector Design</h4>
+                <div class="skill-progress-container"><div class="skill-progress" data-width="85%"></div></div>
+            </div>
+            <div class="skill-card shimmer-card">
+                <div class="skill-icon"><i class="fas fa-code"></i></div>
+                <h4>Web Development</h4>
+                <div class="skill-progress-container"><div class="skill-progress" data-width="75%"></div></div>
+            </div>
+            <div class="skill-card shimmer-card">
+                <div class="skill-icon"><i class="fas fa-bullhorn"></i></div>
+                <h4>Digital Marketing</h4>
+                <div class="skill-progress-container"><div class="skill-progress" data-width="80%"></div></div>
+            </div>
+            <div class="skill-card shimmer-card">
+                <div class="skill-icon"><i class="fas fa-brain"></i></div>
+                <h4>AI Design & Tools</h4>
+                <div class="skill-progress-container"><div class="skill-progress" data-width="78%"></div></div>
+            </div>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="experience-section shimmer-card">
+            <h2 class="section-title wooden-text">Professional Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item shimmer-card">
+                    <h4 class="wooden-text">Embroidery Digitizer</h4>
+                    <p class="company">Sahil Kochher, B-149, Sector-6, Noida</p>
+                    <p class="duration">2023 - Present</p>
+                    <ul>
+                        <li>Creating high-quality embroidery designs using Wilcom Embroidery Studio</li>
+                        <li>Leveraging AI tools for enhanced design creativity and efficiency</li>
+                        <li>Optimizing designs for various fabric types and production requirements</li>
+                        <li>Maintaining 98% client satisfaction rate through accurate design delivery</li>
+                        <li>Training junior digitizers and improving workflow processes</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item learning shimmer-card">
+                    <h4 class="wooden-text">Wilcom Software Learning & Skill Development</h4>
+                    <p class="company">IIGM Pvt. Ltd., Okhla & Self-Development</p>
+                    <p class="duration">2022 - 2023</p>
+                    <ul>
+                        <li>Intensive training in Wilcom Embroidery Studio software</li>
+                        <li>Diploma in Embroidery from IIGM Pvt. Ltd., Okhla</li>
+                        <li>Mastering advanced digitizing techniques and fabric optimization</li>
+                        <li>Exploring AI-powered design tools and integration</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item shimmer-card">
+                    <h4 class="wooden-text">Digital Marketing Specialist</h4>
+                    <p class="company">Lord Krishn Property</p>
+                    <p class="duration">2021 - 2022</p>
+                    <ul>
+                        <li>Managed property listings on 99Acres and MagicBrick platforms</li>
+                        <li>Created digital marketing campaigns for real estate projects</li>
+                        <li>Maintained comprehensive database and property data management</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item shimmer-card">
+                    <h4 class="wooden-text">Executive</h4>
+                    <p class="company">PlanetEDU Exam Pvt. Ltd., Gurugram</p>
+                    <p class="duration">2019 - 2020</p>
+                    <ul>
+                        <li>Managed administrative operations and client communications</li>
+                        <li>Coordinated examination processes and documentation</li>
+                        <li>Developed organizational skills and client service expertise</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: CREATIVE WORKFLOW SECTION -->
+        <div class="workflow-section shimmer-card">
+            <h2 class="section-title wooden-text">My Creative Workflow</h2>
+            <div class="workflow-grid">
+                <div class="step-card">
+                    <span class="step-number">01</span>
+                    <div class="step-icon"><i class="fas fa-paint-brush"></i></div>
+                    <h4>Concept & Sketching</h4>
+                    <p>Creating initial artistic concepts and hand-drawn sketches.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-number">02</span>
+                    <div class="step-icon"><i class="fas fa-magic"></i></div>
+                    <h4>AI Enhancement</h4>
+                    <p>Refining patterns and colors using AI tools like Gemini.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-number">03</span>
+                    <div class="step-icon"><i class="fas fa-layer-group"></i></div>
+                    <h4>Digitizing (Wilcom)</h4>
+                    <p>Precision stitch generation and fabric optimization.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-number">04</span>
+                    <div class="step-icon"><i class="fas fa-stopwatch"></i></div>
+                    <h4>Prototype Stitching</h4>
+                    <p>Test stitch runs to ensure quality and durability.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-number">05</span>
+                    <div class="step-icon"><i class="fas fa-box-open"></i></div>
+                    <h4>Final Production</h4>
+                    <p>Delivery of error-free, production-ready machine files.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Embroidery Projects -->
+        <div class="projects-section shimmer-card">
+            <h2 class="section-title wooden-text">My Embroidery Designs</h2>
+            <p class="projects-subtitle">Showcasing my professional embroidery digitizing work (some created with AI assistance)</p>
+            <div class="embroidery-grid">
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery1.jpg" alt="Embroidery Design 1">
+                    <div class="card-content"><h4>Design 1</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery2.jpg" alt="Embroidery Design 2">
+                    <div class="card-content"><h4>Design 2</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery3.jpg" alt="Embroidery Design 3">
+                    <div class="card-content"><h4>Design 3</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery4.jpg" alt="Embroidery Design 4">
+                    <div class="card-content"><h4>Design 4</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery5.jpg" alt="Embroidery Design 5">
+                    <div class="card-content"><h4>Design 5</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery6.jpg" alt="Embroidery Design 6">
+                    <div class="card-content"><h4>Design 6</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery7.jpg" alt="Embroidery Design 7">
+                    <div class="card-content"><h4>Design 7</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery8.jpg" alt="Embroidery Design 8">
+                    <div class="card-content"><h4>Design 8</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery9.jpg" alt="Embroidery Design 9">
+                    <div class="card-content"><h4>Design 9</h4></div>
+                </div>
+                <div class="embroidery-card shimmer-card">
+                    <img src="images/embroidery10.jpg" alt="Embroidery Design 10">
+                    <div class="card-content"><h4>Design 10</h4></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <div class="education-section shimmer-card">
+            <h2 class="section-title wooden-text">Education & Certifications</h2>
+            <div class="education-grid">
+                <div class="education-column">
+                    <h3 class="wooden-text">Academic Qualifications</h3>
+                    <div class="education-item shimmer-card">
+                        <h4 class="wooden-text">Bachelor of Arts (B.A.)</h4>
+                        <p>CSJM University, Kanpur</p>
+                    </div>
+                    <div class="education-item shimmer-card">
+                        <h4 class="wooden-text">Higher Secondary (12th)</h4>
+                        <p>UP Board</p>
+                    </div>
+                    <div class="education-item shimmer-card">
+                        <h4 class="wooden-text">Secondary (10th)</h4>
+                        <p>UP Board</p>
+                    </div>
+                </div>
+                <div class="education-column">
+                    <h3 class="wooden-text">Professional Certifications</h3>
+                    <div class="education-item shimmer-card">
+                        <h4 class="wooden-text">Diploma in Embroidery</h4>
+                        <p>IIGM Pvt. Ltd., Okhla Industrial Area</p>
+                    </div>
+                    <div class="education-item shimmer-card">
+                        <h4 class="wooden-text">Wilcom Embroidery Studio Proficiency</h4>
+                        <p>Advanced digitizing and design optimization</p>
+                    </div>
+                    <div class="education-item shimmer-card">
+                        <h4 class="wooden-text">Web Designing Certification</h4>
+                        <p>HTML, CSS, JavaScript proficiency</p>
+                    </div>
+                    <div class="education-item shimmer-card">
+                        <h4 class="wooden-text">Diploma in Computer Applications</h4>
+                        <p>Comprehensive computer skills</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Info & Interests -->
+        <div class="personal-grid">
+            <div class="personal-card shimmer-card">
+                <h3 class="wooden-text"><i class="fas fa-info-circle"></i> Personal Information</h3>
+                <p><strong>Father's Name:</strong> Awadhesh Kumar</p>
+                <p><strong>Date of Birth:</strong> July 17, 1998</p>
+                <p><strong>Gender:</strong> Male</p>
+                <p><strong>Marital Status:</strong> Unmarried</p>
+                <p><strong>Nationality:</strong> Indian</p>
+                <p><strong>Location:</strong> New Delhi, India</p>
+            </div>
+            
+            <div class="personal-card shimmer-card">
+                <h3 class="wooden-text"><i class="fas fa-heart"></i> Interests & Hobbies</h3>
+                <ul>
+                    <li>Creative design & artistic sketching</li>
+                    <li>AI-powered design exploration</li>
+                    <li>Fashion & embroidery trends</li>
+                    <li>Technology learning & innovation</li>
+                    <li>Digital solutions exploration</li>
+                    <li>E-commerce business understanding</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Pill -->
+        <div class="footer-pill shimmer-card">
+            <span class="footer-text wooden-text">© 2026 Aakash Kumar. All Rights Reserved.</span>
+            <div class="creative-credit">
+                <span>Designed & Digitized with <i class="fas fa-heart"></i> by Aakash Kumar</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Scroll Progress
+        window.addEventListener('scroll', function() {
+            const scrollProgress = document.getElementById('scrollProgress');
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        // Skill Progress
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const targetWidth = bar.getAttribute('data-width');
+                    bar.style.width = targetWidth;
+                    skillObserver.unobserve(bar);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.skill-progress').forEach(bar => {
+            skillObserver.observe(bar);
+        });
+
+        // Animations
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.info-card, .skill-card, .embroidery-card, .timeline-item, .education-item, .personal-card, .footer-pill, .workflow-section, .step-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
